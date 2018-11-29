@@ -6,13 +6,14 @@
 //  Copyright © 2018 Ashley Coleman. All rights reserved.
 //
 
-#ifndef ast_h
-#define ast_h
+#ifndef login_h
+#define login_h
 
-#include "token.h"
+#include "types.h" // maybe unnecessary
+//#include "token.h"
 
 typedef struct AST {
-    Token * value;
+    //Token * value;
     struct AST * left;
     struct AST * right;
 } AST;

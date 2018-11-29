@@ -8,10 +8,10 @@
 
 #include <stdlib.h>
 
-#include "linked_list.h"
+#include "contacts.h"
 
-LinkedList * append(LinkedList * head, Token * token) {
-    LinkedList * new = malloc(sizeof(LinkedList));
+LinkedList * append(LinkedList * head) {
+    /*LinkedList * new = malloc(sizeof(LinkedList));
     new->value = token;
     new->next = NULL;
     
@@ -24,25 +24,25 @@ LinkedList * append(LinkedList * head, Token * token) {
         current = current->next;
     }
     
-    current->next = new;
+    current->next = new;*/
     
     return head;
 }
 
 LinkedList * advance_list(LinkedList * list, int steps) {
-    while (list != NULL && steps > 0) {
+   /* while (list != NULL && steps > 0) {
         list = list->next;
         steps--;
-    }
+    }*/
     
     return list;
 }
 
 void free_list(LinkedList * list) {
-    while (list != NULL) {
+   /* while (list != NULL) {
         LinkedList * next = list->next;
         free(list->value);
         free(list);
         list = next;
-    }
+    }*/
 }

@@ -8,10 +8,10 @@
 
 #include <stdlib.h>
 
-#include "ast.h"
+#include "login.h"
 
 void free_tree(AST * tree) {
-    if (tree == NULL) {
+    /*if (tree == NULL) {
         return;
     }
     
@@ -19,6 +19,6 @@ void free_tree(AST * tree) {
     free_tree(tree->right);
     
     free(tree->value);
-    free(tree);
+    free(tree);*/
 }
 

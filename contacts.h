@@ -6,17 +6,18 @@
 //  Copyright © 2018 Ashley Coleman. All rights reserved.
 //
 
-#ifndef linked_list_h
-#define linked_list_h
+#ifndef contacts_h
+#define contacts_h
 
-#include "token.h"
+#include "types.h" // maybe unnecessary
+//#include "token.h"
 
 typedef struct LinkedList {
-    Token * value;
+    //Token * value;
     struct LinkedList * next;
 } LinkedList;
 
-LinkedList * append(LinkedList *, Token *);
+LinkedList * append(LinkedList *);
 LinkedList * advance_list(LinkedList * , int);
 void free_list(LinkedList * list);
 
