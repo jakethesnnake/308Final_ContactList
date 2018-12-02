@@ -8,7 +8,8 @@
 #ifndef types_h
 #define types_h
 #define max 100
-
+#define TRUE 1
+#define FALSE 0
 typedef struct Contact
 {
 	char * f_name;

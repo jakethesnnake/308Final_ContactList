@@ -37,7 +37,7 @@ int commit_changes(FILE * my_contacts, FILE * all_logins)
 	return TRUE;
 }
 
-int login(char * username, char * password)
+int authenticate(char * username, char * password)
 {
 	// equality testing
 	return TRUE;

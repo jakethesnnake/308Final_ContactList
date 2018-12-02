@@ -18,6 +18,6 @@ int search_contacts(Command * board);
 int commit_changes(FILE * my_contacts, FILE * all_logins);
 int add_contact(Contact c, FILE * fp);
 int add_login(FILE * login_fp);
-int login(char * username, char * password);
+int authenticate(char * username, char * password);
 
 #endif
