@@ -11,7 +11,6 @@
 
 typedef struct Contact
 {
-	struct Contact * next; // LinkedList --> dynamic array
 	char * f_name;
 	char * l_name;
 	char * email;
@@ -21,7 +20,6 @@ typedef struct Contact
 
 typedef struct Account
 {
-	struct Account * next;	// LinkedList --> dynamic array
 	char * username;
 	char * password;
 } Account;
