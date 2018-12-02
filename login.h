@@ -1,23 +1,20 @@
-//
-//  ast.h
-//  Project 3 
-//
-//  Created by Ashley Coleman on 7/5/18.
-//  Copyright © 2018 Ashley Coleman. All rights reserved.
-//
-
+// login.h
 #ifndef login_h
 #define login_h
+#include <stdio.h>
+#include <string.h>
+#include "types.h"
 
-#include "types.h" // maybe unnecessary
-//#include "token.h"
+// Run when program begins
+Account * read_all_accounts(FILE *);
+//Account read_account(char *);
 
-typedef struct AST {
-    //Token * value;
-    struct AST * left;
-    struct AST * right;
-} AST;
+// Run when program ends
+int write_all_accounts(FILE *, Account *);
+char * encrypt_account(Account);
 
-void free_tree(AST *);
+// Authentication
+Account create_account(char *, char *);
+int login(char *, char *);
 
-#endif /* linked_list_h */
+#endif /* login.h */
