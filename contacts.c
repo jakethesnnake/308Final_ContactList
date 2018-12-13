@@ -12,7 +12,7 @@ void initialize(Account a)
 	// **and this class handles user input?
 }
 
-int printContacts(Account a){ // Contact[] is a property of Account so only 1 parameter necessary
+int printContactss(Account a){ // Contact[] is a property of Account so only 1 parameter necessary
 	FILE *fp;
 	char *filename = (strcat(a.username, "_Contacts.txt"));
 	fp = fopen(filename, "w");
@@ -34,7 +34,7 @@ int printContacts(Account a){ // Contact[] is a property of Account so only 1 pa
 }
 
 
-void printVCard(Contact cont) {
+void printVCards(Contact cont) {
 	FILE *fp;
 	char *filename = (strcat(cont.f_name, "_vCard.txt"));
 	fp = fopen(filename, "w");
@@ -51,4 +51,3 @@ void printVCard(Contact cont) {
 	fprintf(fp, "EMAIL: %s\n", cont.email);
 	fclose(fp);
 }
-

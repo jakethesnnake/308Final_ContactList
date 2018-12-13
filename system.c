@@ -7,11 +7,10 @@
 #include "types.h"
 #include "system.h"
 ///main
-main(int argc, const char * argv[]){
+int main(Account * acc, State state){
     char src[50], dest[50];
-    State state = ACTION;
     strcpy(src, "_Contacts.txt");
-    strcpy(dest, "Joy");
+    strcpy(dest, acc->username);
     strcat(dest, src);
     printf("Filename: %s\n", dest);
     FILE * fp = fopen(dest, "r");
@@ -25,7 +24,6 @@ main(int argc, const char * argv[]){
       printf("File is empty\n");
       initContactArray(&a, 5);
     }
-    printf("Hello Bob, \n");
     while(state == ACTION){
         printf("**************************************************\n");
         printf("These are the available commands:\n");
@@ -46,6 +44,7 @@ main(int argc, const char * argv[]){
         else if(cmd.type == LOGOUT){
           state = QUIT;
           iterateArray(&a);
+          printContacts(acc, &a);
         }
         else{
             execute_command(&cmd,&a);
@@ -53,6 +52,7 @@ main(int argc, const char * argv[]){
     }
     printf("Array freed\n");
     freeContactArray(&a);
+    return TRUE;
 }
 
 ///Gets the contacts from the file.
@@ -180,7 +180,23 @@ int execute_command(Command *c,ContactArray *a){
     freeContactArray(&found);
   }
   if(c->type == VCARD){
-
+    if(c->valuetype == STRING){
+      for(int i = 0;i < a->used;i++){
+        if(strstr(a->array[i].f_name,c->search.string)!= NULL){
+          printVCard(a->array[i]);
+          printf("VCARD created successfully\n");
+        }
+      }
+    }
+    if(c->valuetype == DOUBLE){
+      for(int i = 0;i < a->used;i++){
+        if(a->array[i].phone_num == c->search.phone_num){
+          printVCard(a->array[i]);
+          printf("VCARD created successfully\n");
+        }
+      }
+    }
+    printf("No accoutn for VCARD\n");
   }
   if(c->type == CHANGE){
     int x = change_contact(c,a);
@@ -442,6 +458,34 @@ int remove_element(ContactArray *a, int index, int arraylength){
     a->size = size - 1;
     a->used = used - 1;
     return TRUE;
+}
+int printContacts(Account * a, ContactArray * c){ // Contact[] is a property of Account so only 1 parameter necessary
+	FILE *fp;
+	char *filename = (strcat(a->username, "_Contacts.txt"));
+	fp = fopen(filename, "w");
+	fprintf(fp, "%d\n", c->used);
+	for(int i = 0; i < c->used; i++){
+		fprintf(fp, "%s ", c->array[i].f_name);
+		fprintf(fp, "%s ", c->array[i].l_name);
+		fprintf(fp, "%f ", c->array[i].phone_num);
+		fprintf(fp, "%s ", c->array[i].address);
+		fprintf(fp, "%s\n", c->array[i].email);
+	}
+	fclose(fp);
+  return TRUE;
+}
+
+int printVCard(Contact cont) {
+	FILE *fp;
+	char *filename = (strcat(cont.f_name, "_vCard.txt"));
+	fp = fopen(filename, "w");
+	fprintf(fp, "NAME: %s ", cont.f_name);
+	fprintf(fp, "%s\n", cont.l_name);
+	fprintf(fp, "NUMBER: %f\n", cont.phone_num);
+	fprintf(fp, "ADDRESS: %s\n", cont.address);
+	fprintf(fp, "EMAIL: %s\n", cont.email);
+	fclose(fp);
+  return TRUE;
 }
 ///Used a guide to make a dynamic array. https://stackoverflow.com/questions/3536153/c-dynamically-growing-array.
 ///All credit to original creator.

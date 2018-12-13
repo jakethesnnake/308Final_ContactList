@@ -7,7 +7,7 @@
 #include "types.h"
 
 void initialize(Account a);
-int printContacts(Account a);
-void printVCard(Contact cont);
+int printContactss(Account a);
+void printVCards(Contact cont);
 
 #endif
