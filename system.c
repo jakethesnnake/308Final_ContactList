@@ -17,9 +17,14 @@ main(int argc, const char * argv[]){
     FILE * fp = fopen(dest, "r");
     ContactArray a;
     int gc = getContacts(fp,&a);
-    fclose(fp);
-    if(gc == FALSE)printf("Error reading contact list.\n");
-    if(gc == 2)printf("File is empty\n");
+    if(gc == FALSE){
+      printf("No data found.\n");
+      initContactArray(&a, 5);
+    }
+    if(gc == 2){
+      printf("File is empty\n");
+      initContactArray(&a, 5);
+    }
     printf("Hello Bob, \n");
     while(state == ACTION){
         printf("**************************************************\n");
@@ -81,6 +86,7 @@ int getContacts(FILE * stream,ContactArray *a){
         }
         insertContactArray(a, c);
     }
+    fclose(stream);
     return TRUE;
 }
 ///Sets the command to whatever value is needed
