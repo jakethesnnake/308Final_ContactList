@@ -35,7 +35,6 @@ int set_command(char *command, char *contact, Command * c);
 int execute_command(Command * c,ContactArray *a);
 int add_contactsystem(Command *c, ContactArray *a);
 int find_contacts(Command *c,ContactArray *database, ContactArray *found);
-int contact_vcard(Command *cmd, ContactArray *c);
 int change_contact(Command *cmd, ContactArray * c);
 int remove_contact(Command *cmd, ContactArray *c);
 int search_array(ContactArray *a, char *string);
@@ -43,6 +42,6 @@ int iterateArray(ContactArray *a);
 int remove_element(ContactArray *a, int index, int arraylength);
 int removeandresize(ContactArray *a, int index, int arrayLength);
 int printContacts(Account * a, ContactArray * c);
-int printVCard(Contact cont);
+int printVCard(Command *c, ContactArray * a, FILE * fp);
 
 #endif
