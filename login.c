@@ -1,3 +1,22 @@
+//  login.c
+//  Authentication, initialization, encryption and file I/O
+
+#include <stdlib.h>
+#include "login.h"
+
+// Parses
+Account read_one_account(char * line)
+{
+	Account a;
+	if(line == NULL) return a;
+	const char delim[2] = "~";
+	char * token = strtok(line, delim);
+	a.username = token;
+	token = strtok(NULL, delim);
+	a.password = token;
+	return a;
+}
+
 // Evaluates equality iteratively through file
 Account tryLogin(char * uname, char * psw)
 {
@@ -40,4 +59,14 @@ Account tryCreateAccount(char * uname, char * psw)
 	fprintf("%s~%s", uname, psw);
 	fclose(reader);
 	return a;
+}
+
+void encrypt_one_password(char * psw)
+{
+	
+}
+
+void decrypt_one_password(char * psw)
+{
+	
 }
