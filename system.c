@@ -63,6 +63,7 @@ int getContacts(FILE * stream,ContactArray *a){
     if(ftell(stream) == 0)return 2;
     fseek(stream,0,SEEK_SET);
     int arraysize;
+    if(arraysize == 0)return FALSE;
     fscanf(stream,"%d",&arraysize);
     initContactArray(a,arraysize);
     char str[100], firstname[50], lastname[50],address[100],email[50],phonenumber[15];
