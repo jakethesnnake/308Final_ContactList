@@ -8,37 +8,30 @@
 #include "core.h"
 #include "types.h"
 
-int add_contact(Contact c, FILE * fp)
-{
-	// add to list/array
-	return TRUE;
-}
-
-int add_login(FILE * login_fp)
-{
-	// add to list/array
-    return TRUE;
-}
-
-int search_contacts(Command * board)
-{
-	// query list/array
-	return TRUE;
-}
-
 int core_main(int argc, const char * argv[])
 {
-    return TRUE;
-}
-
-int commit_changes(FILE * my_contacts, FILE * all_logins)
-{
-	// WRITE TO FILE AFTER USER-QUIT FOR PERSISTANT STORAGE
-	return TRUE;
-}
-
-int authenticate(char * username, char * password)
-{
-	// equality testing
+	
+	// **parse user input
+	// **find if user wants to createAccount(0) or login(1)
+	// **enforce valid input (loops)
+	
+	int choice = 1;
+	char * uname = "John";
+	char * psw = "Doe";
+	
+	// start of while loop
+	if(choice == 1) // login attempt
+	{
+		if(tryLogin(uname, psw)) printf("Welcome back!\n");
+		else printf("Invalid login attempt\n");
+    }
+	else if(choice == 0) // create account attempt
+	{
+		int b = tryCreateAccount(uname,psw);
+		if(b == TRUE) printf("new!\n"); else printf("--old\n");
+	}
+	else printf("Invalid Input");
+	// end of while loop
+	
 	return TRUE;
 }

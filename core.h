@@ -14,10 +14,5 @@
 #define FALSE 0
 
 int core_main(int argc, const char * argv[]);
-int search_contacts(Command * board); 
-int commit_changes(FILE * my_contacts, FILE * all_logins);
-int add_contact(Contact c, FILE * fp);
-int add_login(FILE * login_fp);
-int authenticate(char * username, char * password);
 
 #endif

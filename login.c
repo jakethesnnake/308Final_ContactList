@@ -1,88 +1,68 @@
 //  login.c
-//  Authenticate, Create Account, File Writing/Reading
+//  Authentication, initialization, encryption and file I/O
 
 #include <stdlib.h>
 #include "login.h"
 
-// Run when program begins
-Account * read_all_accounts(FILE * fp)
+// Parses
+Account read_one_account(char * line)
 {
-	Account * acctArr;
-	char * uname;
-	char * psw;
-	//FILE * f_in = fopen(argv[1],"r");
-	//FILE * f_out = fopen(argv[2], "w");
-	if(fp == NULL) return NULL;
-	while(fscanf(fp , "%s %s\n", uname, psw) != EOF) // EOF = end of file (.hasNextLine())
-	{
-		Account a;
-		a.username = uname;
-		a.password = psw;
-		*acctArr = a;
-		++acctArr;
-	}
-	fclose(fp);
-	return acctArr;
+	Account a;
+	if(line == NULL) return a;
+	const char delim[2] = "~";
+	char * token = strtok(line, delim);
+	a.username = token;
+	token = strtok(NULL, delim);
+	a.password = token;
+	return a;
 }
-/*Account read_account(char * line)
+
+// Evaluates equality iteratively through file
+int tryLogin(char * uname, char * psw)
+{
+	FILE * reader = fopen("AllLoginData.txt", "r");
+	Account AccArr[100];
+	char line[10000];
+	const char delim[2] = "\n";
+	for(int i = 0; fscanf(reader, "%s\n", line) != EOF; i++)
+	{
+		AccArr[i] = read_one_account(line);
+		
+		size_t n_ln = strlen(AccArr[i].username)-1;
+		size_t p_ln = strlen(AccArr[i].password)-1;
+		if (AccArr[i].username[n_ln] == '\n') AccArr[i].username[n_ln] = '\0';
+		if (AccArr[i].username[p_ln] == '\n') AccArr[i].password[p_ln] = '\0';
+		
+		if(strcmp(uname,AccArr[i].username) == 0 && strcmp(psw,AccArr[i].password) == 0) 
+		{
+			fclose(reader);
+			return TRUE;
+		}
+	}
+	fclose(reader);
+	return FALSE;
+}
+
+// May creates account upon successful equality testing (referential)
+int tryCreateAccount(char * uname, char * psw)
+{
+	if(tryLogin(uname,psw)) return FALSE;
+	Account a;
+	a.username = uname;
+	a.password = psw;
+	const char c[2] = ",";
+	FILE * reader = fopen("AllLoginData.txt", "a+"); // appending
+	fprintf(reader, "%s~%s\n", uname, psw);
+	fclose(reader);
+	return TRUE;
+}
+
+void encrypt_one_password(char * psw)
 {
 	
-}*/
-/*int read_board(Board * board, FILE * fp)
-{
-	char temp[10000];
-	char arr[10000];
-	if(fp == NULL) return FALSE;
-	int w = fscanf(fp, "%d", &board->width);
-	int h = fscanf(fp, "%d\n", &board->height);	// height
-	if(w < 1 || h < 1) return FALSE;
-	int i = 0;
-	int a = 0, b = 0;
-	while(i <= ((board->width) * board->height)) // eliminates new line character
-	{
-		fgets(temp,2,fp);
-		if(*temp == '\n') 
-		{ 
-			fgets(temp,2,fp);
-			if(*temp == '\n') break;
-		}
-		arr[i] = *temp; 
-		i++; 
-	}
-	int z = 0;
-	while(arr[z] != '\0')
-	{
-		if(arr[z] == '*') {board->board[a][b] = 1; b++;}
-		else if(arr[z] == '.') {board->board[a][b] = 0; b++;}
-		if(b == board->width) {a++; b = 0;}
-		z++;
-	}
-	fclose(fp);
-    return TRUE;
-}*/
-
-// Run when program ends
-int write_all_accounts(FILE * fp, Account * accts)
-{
-	return TRUE;
-}
-char * encrypt_account(Account a)
-{
-	return NULL;
 }
 
-// Authentication
-Account create_account(char * uname, char * psw)
+void decrypt_one_password(char * psw)
 {
-	Account temp;
-	temp.username = uname;
-	temp.password = psw;
-	return temp;
-}
-
-// Initializes file reading
-// 1 = PASS, 0 = FAIL
-int login(char * uname, char * psw)
-{
-	return TRUE;
+	
 }

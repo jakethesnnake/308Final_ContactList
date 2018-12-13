@@ -1,9 +1,6 @@
 /* types_h */
 
-// Both LinkedLists can be changed into dynamic arrays
-// VCARD has not been implemented
-
-// 1 
+// Array approach
 
 #ifndef types_h
 #define types_h
@@ -23,6 +20,7 @@ typedef struct Account
 {
 	char * username;
 	char * password;
+	Contact cons[20];
 } Account;
 
 typedef struct Command
