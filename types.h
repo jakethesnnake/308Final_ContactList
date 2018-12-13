@@ -7,13 +7,13 @@
 #define max 100
 #define TRUE 1
 #define FALSE 0
-typedef struct Contact
+typedef struct
 {
-	char * f_name;
-	char * l_name;
-	char * email;
-	long * phone_num;
-	char * address;
+	char  f_name[75];
+	char  l_name[75];
+	char  email[75];
+	double phone_num;
+	char  address[110];
 } Contact;
 
 typedef struct Account
@@ -25,8 +25,9 @@ typedef struct Account
 
 typedef struct Command
 {
-	enum { ADD, FIND, VCARD, CHANGE, REMOVE} type;
-	union { long phone_num; char * string; } search; // string is all else
+	enum { ADD, FIND, VCARD, CHANGE, REMOVE, LOGOUT} type;
+	enum {DOUBLE, STRING} valuetype;
+	union { double phone_num; char * string; } search; // string is all else
 } Command;
 
 typedef enum {ACCT_SETUP, LOGIN, ACTION, QUIT} State; // Session runtime state
