@@ -25,11 +25,11 @@ typedef struct Account
 
 typedef struct Command
 {
-	enum { ADD, FIND, VCARD, CHANGE, REMOVE, LOGOUT} type;
+	enum { ADD, FIND, VCARD, CHANGE, REMOVE,VIEW, LOGOUT} type;
 	enum {DOUBLE, STRING} valuetype;
 	union { double phone_num; char * string; } search; // string is all else
 } Command;
 
 typedef enum {ACCT_SETUP, LOGIN, ACTION, QUIT} State; // Session runtime state
 
-#endif 
+#endif

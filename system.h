@@ -42,6 +42,6 @@ int iterateArray(ContactArray *a);
 int remove_element(ContactArray *a, int index, int arraylength);
 int removeandresize(ContactArray *a, int index, int arrayLength);
 int printContacts(Account * a, ContactArray * c);
-int printVCard(Command *c, ContactArray * a, FILE * fp);
+int printVCard(Command *c, ContactArray * a);
 
 #endif
