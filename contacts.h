@@ -5,9 +5,11 @@
 #include <stdio.h>
 #include <string.h>
 #include "types.h"
+#include "contacts.h"
+#include "login.h"
 
 void initialize(Account a);
-int printContacts(Account a);
-void printVCard(Contact cont);
+int pContacts(Account a);
+void pVCards(Contact cont);
 
 #endif

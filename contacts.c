@@ -12,30 +12,34 @@ void initialize(Account a)
 	// **and this class handles user input?
 }
 
-int printContacts(Account a){ // Contact[] is a property of Account so only 1 parameter necessary
-	FILE *fp;
+int pContacts(Account a){ // Contact[] is a property of Account so only 1 parameter necessary
+/* 	FILE *fp;
 	char *filename = (strcat(a.username, "_Contacts.txt"));
 	fp = fopen(filename, "w");
+	Contact * temp = a.cons;
 	fprintf(fp, "%ld\n", sizeof(Contact));
-	for(int i = 0; i < sizeof(Contact); i++){
-
-		if (a.cons[i].address == NULL) a.cons[i].address = "*";
+	for(int i = 0; i < sizeof(Contact); i++)
+	{
+		
+		temp->address[0] = "a";
+		if (temp.address == NULL) *temp->address = "*";
 		if (a.cons[i].email == NULL) a.cons[i].email = "*";
 		if (a.cons[i].f_name == NULL || a.cons[i].l_name == NULL || a.cons[i].phone_num == NULL) {
 			return printf("error");
 		}
 		fprintf(fp, "%s, ", a.cons[i].f_name);
 		fprintf(fp, "%s, ", a.cons[i].l_name);
-		fprintf(fp, "%ln, ", a.cons[i].phone_num);
+		fprintf(fp, "%f, ", a.cons[i].phone_num);
 		fprintf(fp, "%s, ", a.cons[i].address);
 		fprintf(fp, "%s\n", a.cons[i].email);
 	}
-	fclose(fp);
+	fclose(fp); */
+	return 0;
 }
 
 
-void printVCard(Contact cont) {
-	FILE *fp;
+void pVCards(Contact cont) {
+/* 	FILE *fp;
 	char *filename = (strcat(cont.f_name, "_vCard.txt"));
 	fp = fopen(filename, "w");
 
@@ -46,9 +50,8 @@ void printVCard(Contact cont) {
 	}
 	fprintf(fp, "NAME: %s ", cont.f_name);
 	fprintf(fp, "%s\n", cont.l_name);
-	fprintf(fp, "NUMBER: %ln\n", cont.phone_num);
+	fprintf(fp, "NUMBER: %f\n", cont.phone_num);
 	fprintf(fp, "ADDRESS: %s\n", cont.address);
 	fprintf(fp, "EMAIL: %s\n", cont.email);
-	fclose(fp);
+	fclose(fp); */
 }
-

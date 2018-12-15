@@ -23,16 +23,11 @@ int tryLogin(char * uname, char * psw)
 	FILE * reader = fopen("AllLoginData.txt", "r");
 	Account AccArr[100];
 	char line[10000];
-	const char delim[2] = "\n";
 	for(int i = 0; fscanf(reader, "%s\n", line) != EOF; i++)
 	{
 		AccArr[i] = read_one_account(line);
-		
-		size_t n_ln = strlen(AccArr[i].username)-1;
-		size_t p_ln = strlen(AccArr[i].password)-1;
-		if (AccArr[i].username[n_ln] == '\n') AccArr[i].username[n_ln] = '\0';
-		if (AccArr[i].username[p_ln] == '\n') AccArr[i].password[p_ln] = '\0';
-		
+		//printf("%s~%s\n",AccArr[i].username, AccArr[i].password);
+		//printf("%s~%s\n",uname, psw);
 		if(strcmp(uname,AccArr[i].username) == 0 && strcmp(psw,AccArr[i].password) == 0) 
 		{
 			fclose(reader);
@@ -46,14 +41,22 @@ int tryLogin(char * uname, char * psw)
 // May creates account upon successful equality testing (referential)
 int tryCreateAccount(char * uname, char * psw)
 {
-	if(tryLogin(uname,psw)) return FALSE;
-	Account a;
-	a.username = uname;
-	a.password = psw;
-	const char c[2] = ",";
-	FILE * reader = fopen("AllLoginData.txt", "a+"); // appending
+	FILE * reader = fopen("AllLoginData.txt", "r+");
+	Account AccArr[100];
+	char line[10000];
+	const char delim[2] = "\n";
+	for(int i = 0; fscanf(reader, "%s\n", line) != EOF; i++)
+	{
+		AccArr[i] = read_one_account(line);
+		if(strcmp(uname,AccArr[i].username) == 0) 
+		{
+			fclose(reader);
+			return FALSE;
+		}
+	}
 	fprintf(reader, "%s~%s\n", uname, psw);
 	fclose(reader);
+	//printf("%s~%s\n", uname, psw);
 	return TRUE;
 }
 
