@@ -11,30 +11,29 @@ int contact_manager(char * user)
 {
 	char str[100];
 	snprintf(str, sizeof(str), "./ContactFiles/%s.txt", user);
-	FILE * fp = fopen(str,"a+");
+	FILE * fp = fopen(str,"a");
 
     State state = ACTION;
     ContactArray a;
     int gc = getContacts(fp,&a);
     if(gc == FALSE){
-      printf("No data found.\n");
+      printf("\n");
       initContactArray(&a, 5);
     }
     if(gc == 2){
-      printf("File is empty\n");
       initContactArray(&a, 5);
     }
     while(state == ACTION){
         printf("**************************************************\n");
         printf("These are the available commands:\n");
-        printf("Add [Contact First Name]\n");
-        printf("Find [Contact Name]\n");
-        printf("VCARD [Contact First Name]\n");
-        printf("Change [Contact First Name]\n");
-        printf("Remove [Contact First Name]\n");
-        printf("View Contacts\n");
-        printf("Logout Now\n");
-        printf("If you would like to search via number please add N before the command, i.e. NAdd 1234567890\n");
+        printf("\tAdd <name>\n");
+        printf("\tFind <name>\n");
+        printf("\tVCARD <name>n");
+        printf("\tChange <name>\n");
+        printf("\tRemove <name>\n");
+        printf("\tView Contacts\n");
+        printf("\tLogout Now\n");
+        printf("\tYou may index by numerical values by adding N before commands.\n\t\t(i.e. NAdd 1234567890)\n : ");
         Command cmd;
         char command[20];
         char contact[50];
@@ -182,22 +181,22 @@ int execute_command(Command *c,ContactArray *a){
     ContactArray found;
     initContactArray(&found,10);
     int x = find_contacts(c,a,&found);
-    if(x == FALSE)printf("Sorry no contact was found\n");
+    if(x == FALSE)printf("No Result\n");
     freeContactArray(&found);
   }
   if(c->type == VCARD){
     int x = printVCard(c, a);
     printf("File close\n");
-    if(x==FALSE)printf("No accoutn for VCARD\n");
+    if(x==FALSE)printf("No VCARD\n");
     if(x == TRUE)printf("VCARD created successfully\n");
   }
   if(c->type == CHANGE){
     int x = change_contact(c,a);
-    if(x == FALSE)printf("No contact found to edit\n");
+    if(x == FALSE)printf("Modification unsuccessful\n");
   }
   if(c->type == REMOVE){
     int x = remove_contact(c,a);
-    if(x == FALSE)printf("Removeal unsuccessful\n");
+    if(x == FALSE)printf("Removal unsuccessful\n");
     else if(x==2)printf("No contact found with those credentials\n");
     else{
       printf("Removal was successful\n");
@@ -221,8 +220,8 @@ int add_contactsystem(Command *c, ContactArray *a){
     Contact cont;
     if(c->valuetype == STRING){
       strcpy(cont.f_name, c->search.string);
-      printf("Please enter: lastname phonenumber address email\n");
-      printf("If you do not want to enter an address or email place a * in its place \n");
+      printf("Enter: <lastname> <phonenumber> <address> <email>\n");
+      printf("\t[Four vales are required -- use * for empty] \n");
       char lastname[50], address[100],email[50],phonenumber[15];
       scanf("%s %s %s %s",lastname,phonenumber,address,email);
       strcpy(cont.l_name,lastname);
@@ -487,8 +486,8 @@ int printVCard(Command *c, ContactArray * a) {
         //strcpy(str,a->array[i].f_name);
       	//strcat(str, "_vCard.txt");
       	FILE * fp;
-		fp = fopen(str, "w");
-        if(fp == NULL)return FALSE;
+		fp = fopen(str, "a");
+        if(fp == NULL) return FALSE;
         printf("File opens\n");
         char fname[120], lname[120], address[175],email[120];
         double phonenum;
@@ -514,7 +513,6 @@ int printVCard(Command *c, ContactArray * a) {
         printf("I'm alive\n");
 		char str[100];
 		snprintf(str, sizeof(str), "./ContactFiles/%s_VCard.txt", a->array[i].f_name);
-      	//char *str = (strcat(a->array[i].f_name, "_vCard.txt"));
       	fp = fopen(str, "w");
         printf("File opens\n");
       	fprintf(fp, "NAME: %s ", a->array[i].f_name);
