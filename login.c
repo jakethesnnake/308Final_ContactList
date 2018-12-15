@@ -67,15 +67,14 @@ int tryCreateAccount(char * uname, char * psw)
 			return FALSE;
 		}
 	}
-
 	fprintf(reader, "%s~%s\n", uname, psw);
 	fclose(reader);
-	//char * name = "Jake";
-	char str[MAX];
+	contact_manager(uname);
+	/* char str[MAX];
 	snprintf(str, sizeof(str), "./ContactFiles/%s.txt", uname);
     FILE *fptr;
     fptr = fopen(str, "w");
-	fclose(fptr);
+	fclose(fptr); */
 	return TRUE;
 }
 

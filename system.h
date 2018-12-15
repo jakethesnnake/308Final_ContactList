@@ -41,7 +41,7 @@ int search_array(ContactArray *a, char *string);
 int iterateArray(ContactArray *a);
 int remove_element(ContactArray *a, int index, int arraylength);
 int removeandresize(ContactArray *a, int index, int arrayLength);
-int printContacts(Account * a, ContactArray * c);
+int printContacts(char * fname, ContactArray * c);
 int printVCard(Command *c, ContactArray * a);
 
 #endif

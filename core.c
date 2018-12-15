@@ -59,5 +59,4 @@ int core_main(int argc, const char * argv[])
 		}
 		else printf("Invalid Input");
 	}
-	printf("out");
 }
