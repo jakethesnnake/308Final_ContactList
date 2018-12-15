@@ -12,3 +12,6 @@ Jake~Snake
 f~g
 J~K
 m~m
+Stephen~Andrew
+A~B
+john~smith

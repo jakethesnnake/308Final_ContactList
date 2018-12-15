@@ -15,7 +15,7 @@ typedef struct
 	int used;
 	int size;
 }AccountArray;
-
+int contact_manager(char * user);
 void initAccountArray(AccountArray *a, int initialsize);
 void insertAccountArray(AccountArray * a, Account element);
 void freeAccountArray(AccountArray *a);
@@ -25,9 +25,8 @@ typedef struct
 	Contact *array;
 	int used;
 	int size;
-} ContactArray;
+}ContactArray;
 
-int sys(Account * acc, State state);
 void initContactArray(ContactArray *a, int initialsize);
 void insertContactArray(ContactArray *a, Contact element);
 void freeContactArray(ContactArray *a);
@@ -43,6 +42,6 @@ int iterateArray(ContactArray *a);
 int remove_element(ContactArray *a, int index, int arraylength);
 int removeandresize(ContactArray *a, int index, int arrayLength);
 int printContacts(Account * a, ContactArray * c);
-int printVCard(Command *c, ContactArray * a, FILE * fp);
+int printVCard(Command *c, ContactArray * a);
 
 #endif

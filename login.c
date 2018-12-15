@@ -1,8 +1,16 @@
 //  login.c
 //  Authentication, initialization, encryption and file I/O
 
+#include <dirent.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #include "login.h"
+#include "types.h"
+#include "contacts.h"
+#include "system.h"
+
 
 // Parses
 Account read_one_account(char * line)
@@ -26,11 +34,10 @@ int tryLogin(char * uname, char * psw)
 	for(int i = 0; fscanf(reader, "%s\n", line) != EOF; i++)
 	{
 		AccArr[i] = read_one_account(line);
-		//printf("%s~%s\n",AccArr[i].username, AccArr[i].password);
-		//printf("%s~%s\n",uname, psw);
 		if(strcmp(uname,AccArr[i].username) == 0 && strcmp(psw,AccArr[i].password) == 0) 
 		{
 			fclose(reader);
+			contact_manager(uname);
 			return TRUE;
 		}
 	}
@@ -41,6 +48,12 @@ int tryLogin(char * uname, char * psw)
 // May creates account upon successful equality testing (referential)
 int tryCreateAccount(char * uname, char * psw)
 {
+/* 	DIR *dr = opendir("ContactFiles"); 
+    if (dr == NULL)  // opendir returns NULL if couldn't open directory 
+    { 
+        printf("Could not open current directory" ); 
+        return 0; 
+    }  */
 	FILE * reader = fopen("AllLoginData.txt", "r+");
 	Account AccArr[100];
 	char line[10000];
@@ -54,9 +67,15 @@ int tryCreateAccount(char * uname, char * psw)
 			return FALSE;
 		}
 	}
+
 	fprintf(reader, "%s~%s\n", uname, psw);
 	fclose(reader);
-	//printf("%s~%s\n", uname, psw);
+	//char * name = "Jake";
+	char str[MAX];
+	snprintf(str, sizeof(str), "./ContactFiles/%s.txt", uname);
+    FILE *fptr;
+    fptr = fopen(str, "w");
+	fclose(fptr);
 	return TRUE;
 }
 

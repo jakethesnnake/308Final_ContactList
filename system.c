@@ -2,17 +2,24 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <dirent.h>
 
 #include "core.h"
 #include "types.h"
 #include "system.h"
-
-int sys(Account * acc, State state){
+int contact_manager(char * user)
+{
+	DIR *dr = opendir("ContactFiles"); 
+    if (dr == NULL)  // opendir returns NULL if couldn't open directory 
+    { 
+        printf("Could not open current directory" ); 
+        return 0; 
+    } 
     char src[50], dest[50];
-    strcpy(src, "_Contacts.txt");
-    strcpy(dest, "Joy");
-    state = ACTION;
-    strcat(dest, src);
+    strcpy(user, "_Contacts.txt");
+    strcpy(dest, user);
+    State state = ACTION;
+    strcat(dest, user);
     printf("Filename: %s\n", dest);
     FILE * fp = fopen(dest, "r");
     ContactArray a;
@@ -33,6 +40,7 @@ int sys(Account * acc, State state){
         printf("VCARD [Contact First Name]\n");
         printf("Change [Contact First Name]\n");
         printf("Remove [Contact First Name]\n");
+        printf("View Contacts\n");
         printf("Logout Now\n");
         printf("If you would like to search via number please add N before the command, i.e. NAdd 1234567890\n");
         Command cmd;
@@ -45,7 +53,7 @@ int sys(Account * acc, State state){
         else if(cmd.type == LOGOUT){
           state = QUIT;
           iterateArray(&a);
-          printContacts(acc, &a);
+          //printContacts(acc, &a); (uname,_)
         }
         else{
             execute_command(&cmd,&a);
@@ -57,7 +65,7 @@ int sys(Account * acc, State state){
 }
 
 ///Gets the contacts from the file.
-int getContacts(FILE * stream, ContactArray *a){
+int getContacts(FILE * stream,ContactArray *a){
     if(stream == NULL)return FALSE;
     fseek(stream,0,SEEK_END);
     if(ftell(stream) == 0)return 2;
@@ -163,6 +171,10 @@ int set_command(char *command, char *contact, Command * c){
         c->search.phone_num = phone;
         return TRUE;
     }
+    if(strcmp(command,"View")==0){
+      c->type = VIEW;
+      return TRUE;
+    }
     if(strcmp(command,"Logout")==0){
         c->type = LOGOUT;
         return TRUE;
@@ -182,10 +194,10 @@ int execute_command(Command *c,ContactArray *a){
     freeContactArray(&found);
   }
   if(c->type == VCARD){
-    FILE *fp;
-    int x = printVCard(c, a, fp);
-    fclose(fp);
+    int x = printVCard(c, a);
+    printf("File close\n");
     if(x==FALSE)printf("No accoutn for VCARD\n");
+    if(x == TRUE)printf("VCARD created successfully\n");
   }
   if(c->type == CHANGE){
     int x = change_contact(c,a);
@@ -206,6 +218,10 @@ int execute_command(Command *c,ContactArray *a){
         printf("**************************************************\n");
       }
     }
+  }
+  if(c->type == VIEW){
+    int x =iterateArray(a);
+    if(x == FALSE)printf("You have no contacts\n");
   }
 }
 
@@ -413,6 +429,7 @@ int remove_contact(Command *cmd, ContactArray *c){
   return 2;
 }
 int iterateArray(ContactArray *a){
+  if(a->used == 0)return FALSE;
   for(int i = 0;i < a->used;i++){
     printf("%s\n", a->array[i].f_name);
     printf("%s\n", a->array[i].l_name);
@@ -449,46 +466,50 @@ int printContacts(Account * a, ContactArray * c){ // Contact[] is a property of 
   printf("%s\n",filename);
   printf("%d\n", c->used);
 	fp = fopen(filename, "w+");
-	fprintf(fp, "%d\n", c->used);
+	fprintf(fp, "%d ", c->used);
 	for(int i = 0; i < c->used; i++){
     char fname[120], lname[120], address[175],email[120];
     double phonenum;
     strcpy(fname, c->array[i].f_name);
-		fprintf(fp, "%s ",fname);
+		fprintf(fp, "\n%s ",fname);
     strcpy(lname, c->array[i].l_name);
-		fprintf(fp, "%s ", lname);
+		fprintf(fp, "%s", lname);
     phonenum = c->array[i].phone_num;
 		fprintf(fp, "%.0lf ", phonenum);
     strcpy(address, c->array[i].address);
 		fprintf(fp, "%s ", address);
     strcpy(email,  c->array[i].email);
-		fprintf(fp, "%s\n", email);
+		fprintf(fp, "%s", email);
 	}
 	fclose(fp);
   return TRUE;
 }
 
-int printVCard(Command *c, ContactArray * a, FILE * fp) {
-  if(fp == NULL)return FALSE;
+int printVCard(Command *c, ContactArray * a) {
   if(c->valuetype == STRING){
     for(int i = 0;i < a->used;i++){
       if(strstr(a->array[i].f_name,c->search.string)!= NULL){
+        FILE *fp;
         printf("I'm alive\n");
         char filename[100];
         strcpy(filename,a->array[i].f_name);
       	strcat(filename, "_vCard.txt");
       	fp = fopen(filename, "w");
+        if(fp == NULL)return FALSE;
         printf("File opens\n");
-      	fprintf(fp, "NAME: %s ", a->array[i].f_name);
-      	fprintf(fp, "%s\n", a->array[i].l_name);
-      	fprintf(fp, "NUMBER: %.0lf\n", a->array[i].phone_num);
-      	fprintf(fp, "ADDRESS: %s\n", a->array[i].address);
-        fflush(fp);
-      	fprintf(fp, "EMAIL: %s\n", a->array[i].email);
-        fflush(fp);
-        printf("File opens 7\n");
-        printf("File close\n");
-        printf("VCARD created successfully\n");
+        char fname[120], lname[120], address[175],email[120];
+        double phonenum;
+        strcpy(fname,a->array[i].f_name);
+      	fprintf(fp, "NAME: %s ", fname);
+        strcpy(lname,a->array[i].l_name);
+      	fprintf(fp, "%s\n", lname);
+        phonenum = a->array[i].phone_num;
+      	fprintf(fp, "NUMBER: %.0lf\n", phonenum);
+        strcpy(address, a->array[i].address);
+      	fprintf(fp, "ADDRESS: %s\n", address);
+        strcpy(email, a->array[i].email);
+      	fprintf(fp, "EMAIL: %s\n",email);
+        fclose(fp);
         return TRUE;
       }
     }
@@ -507,8 +528,7 @@ int printVCard(Command *c, ContactArray * a, FILE * fp) {
       	fprintf(fp, "NUMBER: %f\n", a->array[i].phone_num);
       	fprintf(fp, "ADDRESS: %s\n", a->array[i].address);
       	fprintf(fp, "EMAIL: %s\n", a->array[i].email);
-      	fclose(fp);
-        printf("File close\n");
+
         printf("VCARD created successfully\n");
         return TRUE;
       }
