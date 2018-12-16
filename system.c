@@ -11,7 +11,7 @@ int contact_manager(char * user)
 {
 	char str[100];
 	snprintf(str, sizeof(str), "./ContactFiles/%s.txt", user);
-	FILE * fp = fopen(str,"a");
+	FILE * fp = fopen(str,"r+");
 
     State state = ACTION;
     ContactArray a;
@@ -61,8 +61,7 @@ int getContacts(FILE * stream,ContactArray *a){
     fseek(stream,0,SEEK_END);
     if(ftell(stream) == 0)return 2;
     fseek(stream,0,SEEK_SET);
-    int arraysize;
-    if(arraysize == 0)return FALSE;
+	int arraysize;
     fscanf(stream,"%d",&arraysize);
     initContactArray(a,arraysize);
     char str[100], firstname[50], lastname[50],address[100],email[50],phonenumber[15];

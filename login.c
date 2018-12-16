@@ -48,12 +48,6 @@ int tryLogin(char * uname, char * psw)
 // May creates account upon successful equality testing (referential)
 int tryCreateAccount(char * uname, char * psw)
 {
-/* 	DIR *dr = opendir("ContactFiles"); 
-    if (dr == NULL)  // opendir returns NULL if couldn't open directory 
-    { 
-        printf("Could not open current directory" ); 
-        return 0; 
-    }  */
 	FILE * reader = fopen("AllLoginData.txt", "r+");
 	Account AccArr[100];
 	char line[10000];
@@ -70,17 +64,26 @@ int tryCreateAccount(char * uname, char * psw)
 	fprintf(reader, "%s~%s\n", uname, psw);
 	fclose(reader);
 	contact_manager(uname);
-	/* char str[MAX];
-	snprintf(str, sizeof(str), "./ContactFiles/%s.txt", uname);
-    FILE *fptr;
-    fptr = fopen(str, "w");
-	fclose(fptr); */
 	return TRUE;
 }
 
 void encrypt_one_password(char * psw)
 {
+/* 	char enc[100000];
+	char c = *psw;
+	++psw;
+	char c1 = *psw;
+	key = atoi(c) * atoi(c1) *= 199; // prime number -- small for now
+	++psw;
+	c += key;
+	c1 += key;
 	
+	for(int i = 0; i < strlen(psw) - 2; i++)
+	{
+		
+		
+	}
+	 */
 }
 
 void decrypt_one_password(char * psw)
